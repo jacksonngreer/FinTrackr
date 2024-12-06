@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <meta
+      name="description"
+      content="A financial management app to track expenses, investments, and more."
+    >
+    <title>Financial Management App</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>
+        FinTrackr
+        <img src="images/finlogo.png" alt="FinTrackr Logo" />
+      </h1>
+      <div id="navbar"></div>
+    </header>
+
+    <main>
+      <!-- Financial Summary Section -->
+      <section class="financial-summary">
+        <h2>Financial Summary</h2>
+        <ul>
+          <li>
+            <strong>Annual Income After Taxes:</strong> $<span id="annual-income-after-taxes">0.00</span>
+          </li>
+          <li>
+            <strong>Monthly Income After Taxes:</strong> $<span id="monthly-income-after-taxes">0.00</span>
+          </li>
+          <li>
+            <strong>Monthly Disposable Income:</strong> $<span id="monthly-disposable-income">0.00</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Total Expenses Section -->
+      <section class="total-expenses">
+        <h2>Your Total Expenses</h2>
+        <div class="expense-chart">
+          <p>
+            <strong>Fixed Monthly Expenses:</strong> $<span id="fixed-monthly-expenses">0.00</span>
+          </p>
+          <p>
+            <strong>Variable Expenses:</strong> $<span id="variable-monthly-expenses">0.00</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Investments Section -->
+      <section class="investments-summary">
+        <h2>Investments</h2>
+        <ul id="portfolioList"></ul>
+      </section>
+
+      <!-- Reminders Section -->
+      <section class="reminders">
+        <h2>Reminders</h2>
+        <ul id="reminderList"></ul>
+      </section>
+
+      <!-- Clear Local Storage Section -->
+      <section class="button-section">
+        <input type="file" id="importFile" accept="application/json" style="display: none;" />
+        <button id="importBtn" class="btn">Import</button>
+        <button id="exportBtn" class="btn">Export Local Storage</button>
+      </section>
+
+      <section class="clear-section">
+      <button id="clear-storage-btn" class="btn">Clear All Data</button>
+      <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+          <p>Are you sure you want to clear all local storage data?</p>
+          <button id="back-btn" class="btn">Back</button>
+          <button id="clear-btn" class="btn">Clear</button>
+        </div>
+      </div>
+      </section>
+
+      <!-- 
+      <section>
+        <button id="importBtn" class="btn">Import</button>
+        <button id="exportBtn">Export localStorage</button>
+      </section>
+    </main>
+     -->
+
+    <script src="scripts/navbar.js"></script>
+    <script src="scripts/reminders.js"></script>
+    <script src="scripts/investments.js"></script>
+    <script src="scripts/index.js"></script>
+    </main>
+
+  </body>
+</html>

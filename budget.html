@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
+    <title>Budget Page</title>
+
+</head>
+<body>
+    <header>
+        <h1>
+            FinTrackr
+            <img src="images/finlogo.png" alt="FinTrackr Logo">
+        </h1>
+        <div id="navbar"></div>
+    </header>
+
+    <main>
+        <!-- Income Input Section -->
+        <section id="income-section">
+            <h2>Annual Income</h2>
+            <label for="income-type">Income Type:</label>
+            <select id="income-type">
+                <option value="pre-tax">Pre-tax</option>
+                <option value="already-taxed">Already taxed</option>
+            </select><br>
+
+            <label for="filing-status">Filing Status:</label>
+            <select id="filing-status">
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="married-filing-separately">Married Filing Separately</option>
+            </select><br>
+
+            <label for="annual-income">Annual Income ($):</label>
+            <input type="number" id="annual-income" placeholder="Ex: 50000" required>
+            <button id="add-btn">Add</button>
+        </section>
+
+        <!-- Added Income List -->
+        <section id="added-income-section">
+            <h2>Your Income</h2>
+            <div id="income-list">
+                <!-- Added incomes will be dynamically shown here -->
+            </div>
+        </section>
+
+        <!-- Taxes Calculation Section -->
+        <section id="taxes-section" style="display:none;">
+            <h2>Tax Calculation</h2>
+            <p>Your estimated taxes: $<span id="estimated-taxes">0.00</span></p>
+            <p>Your annual income after taxes: $<span id="annual-after-taxes">0.00</span></p>
+            <p>Your monthly income after taxes: $<span id="monthly-after-taxes">0.00</span></p>
+        </section>
+    </main>
+
+
+    <!-- Link to your navbar script -->
+    <script src="scripts/navbar.js"></script>
+
+    <!-- JavaScript to handle income calculation -->
+    <script>
+        const incomeList = [];
+        const incomeListContainer = document.getElementById('income-list');
+
+// Helper function to format money with commas
+function formatMoney(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Function to calculate Virginia state income tax
+function calculateVirginiaTax(income) {
+    let tax = 0;
+
+    if (income <= 3000) {
+        tax = 0; // 0% on income up to $3,000
+    } else if (income <= 5000) {
+        tax = (income - 3000) * 0.02; // 2% on income over $3,000 up to $5,000
+    } else if (income <= 17000) {
+        tax = (2000 * 0.02) + (income - 5000) * 0.03; // 3% on income over $5,000 up to $17,000
+    } else if (income <= 30000) {
+        tax = (2000 * 0.02) + (12000 * 0.03) + (income - 17000) * 0.05; // 5% on income over $17,000 up to $30,000
+    } else {
+        tax = (2000 * 0.02) + (12000 * 0.03) + (13000 * 0.05) + (income - 30000) * 0.0575; // 5.75% on income over $30,000
+    }
+
+    return tax;
+}
+
+// Function to calculate federal tax based on filing status and income
+function calculateFederalTax(income, filingStatus) {
+    let tax = 0;
+
+    if (filingStatus === 'single') {
+        if (income <= 11000) {
+            tax = income * 0.10;
+        } else if (income <= 44725) {
+            tax = 1100 + (income - 11000) * 0.12;
+        } else if (income <= 95375) {
+            tax = 5145 + (income - 44725) * 0.22;
+        } else {
+            tax = 16290 + (income - 95375) * 0.24;
+        }
+    } else if (filingStatus === 'married') {
+        if (income <= 22000) {
+            tax = income * 0.10;
+        } else if (income <= 89450) {
+            tax = 2200 + (income - 22000) * 0.12;
+        } else if (income <= 190750) {
+            tax = 10294 + (income - 89450) * 0.22;
+        } else {
+            tax = 33298 + (income - 190750) * 0.24;
+        }
+    } else if (filingStatus === 'married-filing-separately') {
+        if (income <= 11000) {
+            tax = income * 0.10;
+        } else if (income <= 44725) {
+            tax = 1100 + (income - 11000) * 0.12;
+        } else if (income <= 95375) {
+            tax = 5145 + (income - 44725) * 0.22;
+        } else {
+            tax = 16290 + (income - 95375) * 0.24;
+        }
+    }
+
+    return tax;
+}
+
+// Function to update the displayed incomes and calculations
+function updateIncomeList() {
+    incomeListContainer.innerHTML = '';
+    let totalIncome = 0;
+
+    incomeList.forEach((income, index) => {
+        const incomeItem = document.createElement('div');
+        incomeItem.className = 'income-item';
+        incomeItem.style.display = 'flex';
+        incomeItem.style.alignItems = 'center';
+        incomeItem.innerHTML = `
+        <span id="income-details">${income.type}: $${formatMoney(income.amount)}</span>
+            <button onclick="removeIncome(${index})">Remove</button>
+        `;
+        incomeListContainer.appendChild(incomeItem);
+        totalIncome += income.amount;
+    });
+
+    // Update tax calculation section based on income type
+    if (totalIncome > 0) {
+        document.getElementById('taxes-section').style.display = 'block';
+        
+        // Calculate taxes only for "Pre-tax" income
+        if (incomeList.some(income => income.type === 'pre-tax')) {
+            const filingStatus = document.getElementById('filing-status').value;
+            const federalTax = calculateFederalTax(totalIncome, filingStatus);
+            const stateTax = calculateVirginiaTax(totalIncome);
+            const estimatedTaxes = federalTax + stateTax;
+            const annualAfterTaxes = (totalIncome - estimatedTaxes);
+            localStorage.setItem('annualIncomeAfterTaxes', JSON.stringify(annualAfterTaxes));
+            const monthlyAfterTaxes = (totalIncome - estimatedTaxes) / 12;
+            localStorage.setItem('monthlyIncomeAfterTaxes', JSON.stringify(monthlyAfterTaxes));
+
+            document.getElementById('estimated-taxes').innerText = formatMoney(estimatedTaxes.toFixed(2));
+            document.getElementById('annual-after-taxes').innerText = formatMoney(annualAfterTaxes.toFixed(2));
+            document.getElementById('monthly-after-taxes').innerText = formatMoney(monthlyAfterTaxes.toFixed(2));
+        } else {
+            // If all incomes are already taxed
+            document.getElementById('estimated-taxes').innerText = '0.00';
+            document.getElementById('annual-after-taxes').innerText = formatMoney((totalIncome).toFixed(2));
+            document.getElementById('monthly-after-taxes').innerText = formatMoney((totalIncome / 12).toFixed(2));
+        }
+    } else {
+        localStorage.setItem('annualIncomeAfterTaxes', JSON.stringify(0));
+        localStorage.setItem('monthlyIncomeAfterTaxes', JSON.stringify(0));
+        localStorage.setItem('monthlyIncomeAfterTaxes', JSON.stringify(0));
+
+
+        document.getElementById('taxes-section').style.display = 'none';
+    }
+
+    // Save the updated income list to localStorage
+    localStorage.setItem('incomeList', JSON.stringify(incomeList));
+}
+
+// Add income
+document.getElementById('add-btn').addEventListener('click', function() {
+    const annualIncome = parseFloat(document.getElementById('annual-income').value);
+    const incomeType = document.getElementById('income-type').value;
+
+    if (isNaN(annualIncome) || annualIncome <= 0) {
+        alert("Please enter a valid annual income.");
+        return;
+    }
+
+    // Add income to the list
+    incomeList.push({ amount: annualIncome, type: incomeType });
+    updateIncomeList();
+
+    // Reset form fields
+    document.getElementById('annual-income').value = '';
+});
+
+// Remove income
+function removeIncome(index) {
+    incomeList.splice(index, 1); // Remove the income from the list
+    updateIncomeList(); // Update the displayed income list
+    localStorage.setItem('incomeList', JSON.stringify(incomeList)); // Update local storage
+}
+
+// Load income list from localStorage on page load
+window.onload = function() {
+    const savedIncomeList = localStorage.getItem('incomeList');
+    if (savedIncomeList) {
+        incomeList.push(...JSON.parse(savedIncomeList));
+        updateIncomeList();
+    }
+};
+
+    </script>
+</body>
+</html>

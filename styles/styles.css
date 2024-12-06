@@ -1,0 +1,732 @@
+/* Basic reset for padding and margins */
+
+
+.button-section {
+    display: flex;
+    justify-content: space-between;  /* Spread out the buttons */
+    gap: 10px;  /* Add some space between buttons */
+    flex-wrap: wrap;  /* Allow buttons to wrap on smaller screens */
+  }
+  
+  .button-section .btn {
+    flex: 1;  /* Make all buttons take equal space */
+    padding: 10px;  /* Add padding for button size */
+    text-align: center;  /* Center the text inside the button */
+    background-color: #4CAF50;  /* Example background color */
+    color: white;  /* Text color */
+    border: none;  /* Remove border */
+    border-radius: 5px;  /* Round corners */
+    cursor: pointer;  /* Add cursor pointer for better UX */
+    transition: background-color 0.3s;  /* Smooth transition for hover effect */
+  }
+
+  .button-section .btn:hover {
+    background-color: #45a049;  /* Darker background on hover */
+  }
+
+  .clear-section .btn {
+    flex: 1;  /* Ensure the button takes up all available space */
+    width: 100%;  /* Ensure the button is 100% of its container's width */
+    padding: 10px;  /* Add padding for button size */
+    text-align: center;  /* Center the text inside the button */
+    background-color: #f44336;  /* Red background color */
+    color: white;  /* Text color */
+    border: none;  /* Remove border */
+    border-radius: 5px;  /* Round corners */
+    cursor: pointer;  /* Add cursor pointer for better UX */
+    transition: background-color 0.3s;  /* Smooth transition for hover effect */
+  }
+  
+  .clear-section .btn:hover {
+    background-color: #d32f2f;  /* Darker red on hover */
+  }
+
+          /* Increase size of all select elements */
+        select {
+            margin: 5px;
+        }
+
+                input {
+            margin: 5px;
+        }
+  
+
+  
+  .button-section #exportBtn {
+    flex: 2;  /* If you want the export button to be wider, use flex: 2 */
+  }
+  
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    margin: 15% auto;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+  }
+
+  .modal button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+
+  .modal button:hover {
+    background-color: #0056b3;
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+header {
+    font-family: 'Roboto', sans-serif;
+    background-color: #90EE90;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header img {
+    margin-left: 10px;
+        width: 50px;
+        height: 50px;
+        margin-left: 20px;
+}
+
+#navbar {
+    margin-top: 10px;
+}
+
+/* Default nav link style */
+.nav-item a {
+    text-decoration: none;
+    color: black;
+    padding: 8px 15px; 
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 1rem; /* Use relative units for better flexibility */
+    font-size: 12px;
+}
+
+/* Ensure the navbar items wrap on smaller screens */
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-top: 0px;
+    width: 100%; /* Ensure navbar takes full width */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+/* Highlight the active nav item */
+.nav-item a.highlight {
+    background-color: #f0f0f0; 
+    color: #000;
+    font-weight: bold;
+    border-bottom: 3px solid #000; 
+}
+
+/* Hover effect */
+.nav-item a:hover {
+    background-color: #d0e0d0; 
+    color: #000; 
+    font-weight: bold;
+}
+
+h1, h2 {
+    font-family: 'Roboto', sans-serif;
+    color: #000;
+}
+
+p {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2em;
+    color: #333;
+}
+
+span {
+    color: #333;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+section {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333; /*index body colors*/
+}
+
+label {
+    color: #333;
+}
+
+/* Reminder section adjustments */
+.reminder-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.reminder-input input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.reminder-input button {
+    padding: 8px 12px;
+    background-color: #90EE90;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: not-allowed;
+    color: #fff;
+}
+
+/* Style for the reminder list */
+#reminderList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Style for each reminder item */
+  #reminderList li {
+    word-wrap: break-word; /* Break long words */
+    white-space: normal;   /* Allow text to wrap to the next line */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Style for the remove button */
+  .remove-btn {
+    color: red;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  .remove-btn:hover {
+    color: darkred;
+  }
+
+  
+  .edit-btn {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    margin-left: auto;
+    margin-right: 5px;
+  }
+  
+
+  
+
+.full-width-section {
+    width: 100vw; /* Full viewport width */
+    margin: 0; /* Remove any default margin */
+    padding: 20px; /* Keep padding for readability */
+    border-radius: 0; /* Remove rounded corners if desired */
+}
+
+canvas {
+    display: block; /* Prevent extra spacing below the canvas */
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Style for the "Add Reminder" button */
+.reminder-input button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #36A2EB;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-right: 30px;
+    margin-left: 30px;
+    cursor: pointer; /* Ensures a hand pointer on hover */
+}
+
+.reminder-input button:hover {
+    background-color: #2a80b7;
+    cursor: pointer; /* Keeps the pointer cursor on hover */
+}
+
+/* Style the 'Chart View' and 'List View' buttons specifically */
+#show-chart, #show-list {
+    padding: 10px 20px;
+    border: 2px solid #4ebe51;  /* Button border color */
+    background-color: #4CAF50;  /* Button color */
+    color: white;  /* Text color */
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;  /* Rounded corners */
+    cursor: pointer;  /* Pointer cursor on hover */
+    transition: background-color 0.3s, border-color 0.3s;  /* Smooth transition for hover */
+}
+
+/* Change appearance when hovered */
+#show-chart:hover, #show-list:hover {
+    background-color: #206122;  /* Darker green on hover */
+    border-color: #1a431c;  /* Darker border on hover */
+}
+
+/* Style for focused buttons (clicked or tabbed) */
+#show-chart:focus, #show-list:focus {
+    outline: none;  /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);  /* Blue shadow on focus */
+}
+
+
+
+/* Style the container of the buttons to align them side by side */
+.button-container {
+    display: flex;
+    gap: 10px;  /* Space between the buttons */
+    justify-content: center;  /* Center the buttons */
+    margin-top: 20px;
+}
+
+/* Add spacing and borders to the expense list */
+ul#fixed-expenses-list li, 
+ul#variable-expenses-list li {
+  border-bottom: 1px solid #ccc; /* Light gray line between items */
+  padding: 10px 0; /* Add space around the text */
+  margin: 5px 0; /* Add margin to separate the items */
+}
+
+ul#fixed-expenses-list li:last-child,
+ul#variable-expenses-list li:last-child {
+  border-bottom: none; /* Remove the border from the last item */
+}
+
+#fixed-expenses-list, #variable-expenses-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #fixed-expenses-list li, #variable-expenses-list li {
+    display: flex;
+    justify-content: space-between; /* Pushes the content to the sides */
+    align-items: center; /* Vertically centers the text and button */
+    margin-bottom: 10px;
+  }
+  
+
+  
+
+
+/* Responsive Layout - Adjusting for different screen sizes */
+
+/* Default styles for small devices (phones) */
+@media (max-width: 480px) {
+    main {
+        grid-template-columns: 1fr; /* Stack items in one column */
+        gap: 20px;
+        padding: 20px;
+    }
+
+    header h1 img {
+        width: 40px;
+        height: 40px;
+        margin-left: 5px;
+    }
+
+ 
+    header h1 {
+        font-size: 2em; /* Increase header font size for larger screens */
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    header img {
+        width: 50px;
+        height: 50px;
+        margin-left: 15px;
+    }
+
+
+
+    label {
+        font-size: 1.0em;
+    }
+
+
+    section {
+        padding: 10px;
+    }
+
+    li {
+        font-size: 0.8em;
+    }
+
+    p {
+        font-size: 0.8em;
+    }
+
+
+    #reminderList li {
+        word-wrap: break-word;
+        white-space: normal;   /* Allow text to wrap to the next line */
+        font-size: 12px;
+    }
+
+    .reminder-input input[type="text"] {
+        width: 60%; /* More width for input fields on larger screens */
+    }
+
+    button {
+        font-size: 8px; /* Increased font size for buttons */
+        padding: 8px 20px; /* Increased padding for buttons */
+        border-radius: 8px; /* Optional: Round the corners for a modern look */
+        margin: 3px;
+    }
+
+        /* Increase size of all select elements */
+        select {
+            font-size: 8px; /* Larger font size for select elements */
+            padding: 8px 20px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+    
+        /* Increase size of all input elements */
+        input {
+            font-size: 8px; /* Larger font size for input elements */
+            padding: 8px 20px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+
+        #reminderList li {
+            font-size: 1.0em; /* Adjust the size as needed */
+        }
+
+        #estimated-taxes, #annual-after-taxes, #monthly-after-taxes {
+            font-size: 0.7em; /* Adjust the size as needed */
+        }
+
+        #income-details {
+            font-size: 0.8em; /* Adjust the size or any other style */
+            margin-right: 0.6em;
+        }
+}
+
+/* Medium devices (Tablets) */
+@media (min-width: 768px) {
+    main {
+        grid-template-columns: 1fr; /* Stack items in one column */
+        gap: 20px;
+        padding: 20px;
+    }
+
+ 
+    header h1 {
+        font-size: 3em; /* Increase header font size for larger screens */
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    header img {
+        width: 50px;
+        height: 50px;
+        margin-left: 15px;
+    }
+
+    .nav-item a {
+        font-size: 16px;
+        padding: 8px 15px;
+    }
+
+    label {
+        font-size: 1.2em;
+    }
+
+
+    section {
+        padding: 15px;
+    }
+
+    li {
+        font-size: 0.8em;
+    }
+
+    p {
+        font-size: 1.0em;
+    }
+
+
+    #reminderList li {
+        word-wrap: break-word;
+        white-space: normal;   /* Allow text to wrap to the next line */
+        font-size: 12px;
+    }
+
+    .reminder-input input[type="text"] {
+        width: 60%; /* More width for input fields on larger screens */
+    }
+
+    button {
+        font-size: 10px; /* Increased font size for buttons */
+        padding: 8px 20px; /* Increased padding for buttons */
+        border-radius: 8px; /* Optional: Round the corners for a modern look */
+        margin: 3px;
+    }
+
+        /* Increase size of all select elements */
+        select {
+            font-size: 10px; /* Larger font size for select elements */
+            padding: 8px 20px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+    
+        /* Increase size of all input elements */
+        input {
+            font-size: 10px; /* Larger font size for input elements */
+            padding: 8px 20px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+
+        #reminderList li {
+            font-size: 1em; /* Adjust the size as needed */
+        }
+
+        #estimated-taxes, #annual-after-taxes, #monthly-after-taxes {
+            font-size: 0.8em; /* Adjust the size as needed */
+        }
+
+        #income-details {
+            font-size: 1.0em; /* Adjust the size or any other style */
+            margin-right: 0.8em;
+        }
+}
+
+/* Large devices (Laptops, Desktops) */
+@media (min-width: 1024px) {
+    main {
+        grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+        gap: 25px;
+        padding: 25px;
+    }
+
+    header h1 {
+        font-size: 4em; /* Increase header font size for larger screens */
+    }
+
+    h2 {
+        font-size: 2.2em;
+    }
+
+    header img {
+        width: 75px;
+        height: 75px;
+        margin-left: 20px;
+    }
+
+    .nav-item a {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    label {
+        font-size: 1.5em;
+    }
+
+
+    section {
+        padding: 20px;
+    }
+
+    li {
+        font-size: 1em;
+    }
+
+    p {
+        font-size: 1.5em;
+    }
+
+
+    #reminderList li {
+        word-wrap: break-word;
+        white-space: normal;   /* Allow text to wrap to the next line */
+        font-size: 16px;
+    }
+
+    .reminder-input input[type="text"] {
+        width: 70%; /* More width for input fields on larger screens */
+    }
+
+    button {
+        font-size: 15px; /* Increased font size for buttons */
+        padding: 12px 24px; /* Increased padding for buttons */
+        border-radius: 8px; /* Optional: Round the corners for a modern look */
+        margin: 5px;
+    }
+
+        /* Increase size of all select elements */
+        select {
+            font-size: 15px; /* Larger font size for select elements */
+            padding: 12px 24px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+    
+        /* Increase size of all input elements */
+        input {
+            font-size: 15px; /* Larger font size for input elements */
+            padding: 12px 24px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+
+        #reminderList li {
+            font-size: 1.0em; /* Adjust the size as needed */
+        }
+
+        #estimated-taxes, #annual-after-taxes, #monthly-after-taxes {
+            font-size: 1em; /* Adjust the size as needed */
+        }
+
+        #income-details {
+            font-size: 1.5em; /* Adjust the size or any other style */
+            margin-right: 1em;
+        }
+}
+
+/* Extra large screens (Projectors and larger desktops) */
+@media (min-width: 1600px) {
+    main {
+        grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+        gap: 30px; /* Increased gap */
+        padding: 30px; /* Increased padding */
+    }
+
+    header h1 {
+        font-size: 6em; /* Larger header font size */
+    }
+
+    h2 {
+        font-size: 3.5em;
+    }
+    
+        header img {
+        width: 100px;
+        height: 100px;
+        margin-left: 20px;
+    }
+
+    .nav-item a {
+        font-size: 30px; /* Increased font size for navigation links */
+        padding: 12px 24px; /* Increased padding for navigation links */
+    }
+
+    label {
+        font-size: 2em;
+    }
+
+    section {
+        padding: 25px; /* Increased padding */
+    }
+
+    li {
+        font-size: 1.2em; /* Larger font size for list items */
+    }
+    p {
+        font-size: 2.0em;
+    }
+
+
+    #reminderList li {
+        word-wrap: break-word; /* Break long words */
+        white-space: normal;   /* Allow text to wrap to the next line */
+        font-size: 18px; /* Increased font size for reminder list items */
+    }
+
+    .reminder-input input[type="text"] {
+        width: 80%; /* Wider input fields */
+    }
+    button {
+        font-size: 20px; /* Increased font size for buttons */
+        padding: 12px 24px; /* Increased padding for buttons */
+        border-radius: 8px; /* Optional: Round the corners for a modern look */
+        margin: 5px;
+    }
+
+        /* Increase size of all select elements */
+        select {
+            font-size: 20px; /* Larger font size for select elements */
+            padding: 12px 24px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+    
+        /* Increase size of all input elements */
+        input {
+            font-size: 20px; /* Larger font size for input elements */
+            padding: 12px 24px; /* Larger padding */
+            border-radius: 8px; /* Optional: Round the corners for a modern look */
+        }
+
+        #reminderList li {
+            font-size: 1.2em; /* Adjust the size as needed */
+        }
+
+        #estimated-taxes, #annual-after-taxes, #monthly-after-taxes {
+            font-size: 1em; /* Adjust the size as needed */
+        }
+
+        #income-details {
+            font-size: 2em; /* Adjust the size or any other style */
+            margin-right: 1em;
+        }
+}

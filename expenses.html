@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <title>Manage Expenses</title>
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>
+      FinTrackr
+      <img src="images/finlogo.png" alt="FinTrackr Logo" />
+    </h1>
+    <div id="navbar"></div>
+  </header>
+
+  <main>
+    <!-- Fixed Expenses Section -->
+    <section id="expenses">
+      <h2>Fixed Expenses</h2>
+      <p>Enter your monthly fixed expenses.</p>
+      <div id="fixed-expenses">
+        <form id="fixed-expenses-form">
+          <label for="fixed-name">Expense Name:</label>
+          <input type="text" id="fixed-name" placeholder="Ex: Rent" required />
+          <div>
+            <label for="fixed-amount">Amount ($):</label>
+            <input type="number" id="fixed-amount" placeholder="Ex: 1200" required />
+          </div>
+          <button type="submit">Add Fixed Expense</button>
+        </form>
+      </div>
+
+      <!-- Container for Chart and List -->
+      <!-- Pie Chart for Fixed Expenses -->
+      <canvas id="expenses-chart" width="400" height="200"></canvas>
+      <!-- List of Fixed Expenses -->
+      <ul id="fixed-expenses-list"></ul>
+    </section>
+
+    <!-- Variable Expenses Section -->
+    <section id="variable-expenses-section">
+      <h2>Variable Expenses</h2>
+      <p>Enter your monthly variable expenses.</p>
+      <div id="variable-expenses">
+        <form id="variable-expenses-form">
+          <label for="variable-name">Expense Name:</label>
+          <input type="text" id="variable-name" placeholder="Ex: Groceries" required />
+          <br>
+          <label for="variable-amount">Amount ($):</label>
+          <input type="number" id="variable-amount" placeholder="Ex: 200" required />
+          <br>
+          <button type="submit">Add Variable Expense</button>
+        </form>
+      </div>
+
+      <!-- Pie Chart for Variable Expenses -->
+      <canvas id="variable-expenses-chart" width="400" height="200"></canvas>
+      <!-- List of Variable Expenses -->
+      <ul id="variable-expenses-list"></ul>
+    </section>
+
+    <!-- Toggle between Chart and List -->
+    <section id="toggle-view">
+      <div class="button-container">
+        <button id="show-chart">Chart View</button>
+        <button id="show-list">List View</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Navbar script -->
+  <script src="scripts/navbar.js"></script>
+  <script src="scripts/expenses.js"></script>
+
+  <!-- JavaScript for managing expenses -->
+  <script>
+    // Event listeners for toggling between chart and list views
+    document.getElementById("show-chart").addEventListener("click", function () {
+      document.getElementById("expenses-chart").style.display = "block"; // Show fixed expenses chart
+      document.getElementById("fixed-expenses-list").style.display = "none"; // Hide fixed expenses list
+      document.getElementById("variable-expenses-chart").style.display = "block"; // Show variable expenses chart
+      document.getElementById("variable-expenses-list").style.display = "none"; // Hide variable expenses list
+      location.reload();
+
+    });
+
+    document.getElementById("show-list").addEventListener("click", function () {
+      document.getElementById("expenses-chart").style.display = "none"; // Hide fixed expenses chart
+      document.getElementById("fixed-expenses-list").style.display = "block"; // Show fixed expenses list
+      document.getElementById("variable-expenses-chart").style.display = "none"; // Hide variable expenses chart
+      document.getElementById("variable-expenses-list").style.display = "block"; // Show variable expenses list
+      displayExpenseList();  // Call function to display the list
+      displayVariableExpenseList();  // Display the variable expense list
+    });
+
+    let fixedExpensesList = [];
+    let totalFixedExpenses = 0;
+    let variableExpensesList = [];
+    let totalVariableExpenses = 0;
+
+    // Function to format numbers with commas
+    function formatMoney(value) {
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    // Load expenses from localStorage
+    function loadExpenses() {
+      const storedFixedExpenses = localStorage.getItem("fixedExpenses");
+      if (storedFixedExpenses) {
+        fixedExpensesList = JSON.parse(storedFixedExpenses);
+        fixedExpensesList.forEach(
+          (expense) => (totalFixedExpenses += expense.amount)
+        );
+        updateChart();
+      }
+
+      const storedVariableExpenses = localStorage.getItem("variableExpenses");
+      if (storedVariableExpenses) {
+        variableExpensesList = JSON.parse(storedVariableExpenses);
+        variableExpensesList.forEach(
+          (expense) => (totalVariableExpenses += expense.amount)
+        );
+        updateVariableChart();
+      }
+
+      localStorage.setItem(
+        "fixedMonthlyExpenses",
+        totalFixedExpenses.toFixed(2)
+      );
+      localStorage.setItem(
+        "variableMonthlyExpenses",
+        totalVariableExpenses.toFixed(2)
+      );
+    }
+
+    // Handle form submissions for fixed expenses
+    document
+      .getElementById("fixed-expenses-form")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = document.getElementById("fixed-name").value.trim();
+        const amount = parseFloat(document.getElementById("fixed-amount").value);
+
+        if (name && amount) {
+          const existingExpense = fixedExpensesList.find(
+            (expense) => expense.name === name
+          );
+
+          if (existingExpense) {
+            existingExpense.amount += amount;
+          } else {
+            fixedExpensesList.push({ name, amount });
+          }
+
+          totalFixedExpenses = fixedExpensesList.reduce(
+            (total, expense) => total + expense.amount,
+            0
+          );
+
+          localStorage.setItem(
+            "fixedExpenses",
+            JSON.stringify(fixedExpensesList)
+          );
+          localStorage.setItem(
+            "fixedMonthlyExpenses",
+            totalFixedExpenses.toFixed(2)
+          );
+
+          updateChart();
+          displayExpenseList();
+
+          document.getElementById("fixed-name").value = "";
+          document.getElementById("fixed-amount").value = "";
+        }
+      });
+
+    // Handle form submissions for variable expenses
+    document
+      .getElementById("variable-expenses-form")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = document.getElementById("variable-name").value.trim();
+        const amount = parseFloat(document.getElementById("variable-amount").value);
+
+        if (name && amount) {
+          const existingExpense = variableExpensesList.find(
+            (expense) => expense.name === name
+          );
+
+          if (existingExpense) {
+            existingExpense.amount += amount;
+          } else {
+            variableExpensesList.push({ name, amount });
+          }
+
+          totalVariableExpenses = variableExpensesList.reduce(
+            (total, expense) => total + expense.amount,
+            0
+          );
+
+          localStorage.setItem(
+            "variableExpenses",
+            JSON.stringify(variableExpensesList)
+          );
+          localStorage.setItem(
+            "variableMonthlyExpenses",
+            totalVariableExpenses.toFixed(2)
+          );
+
+          updateVariableChart();
+          displayVariableExpenseList();
+
+          document.getElementById("variable-name").value = "";
+          document.getElementById("variable-amount").value = "";
+        }
+      });
+
+    // Function to update the fixed expenses pie chart
+    function updateChart() {
+      const ctx = document.getElementById("expenses-chart").getContext("2d");
+      const expenseData = fixedExpensesList.map((expense) => expense.amount);
+      const expenseLabels = fixedExpensesList.map((expense) => expense.name);
+
+      if (window.expensesChart) {
+        window.expensesChart.data.datasets[0].data = expenseData;
+        window.expensesChart.data.labels = expenseLabels;
+        window.expensesChart.update();
+      } else {
+        window.expensesChart = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: expenseLabels,
+            datasets: [
+              {
+                data: expenseData,
+                backgroundColor: [
+                  "#36A2EB",
+                  "#FF6384",
+                  "#FFCE56",
+                  "#4BC0C0",
+                  "#9966FF",
+                  "#FF9F40",
+                  "#9E9E9E",
+                  "#4CAF50",
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: "Fixed Expenses Breakdown",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return `$${formatMoney(tooltipItem.raw)}`;
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+    }
+
+    // Function to update the variable expenses pie chart
+    function updateVariableChart() {
+      const ctx = document.getElementById("variable-expenses-chart").getContext("2d");
+      const expenseData = variableExpensesList.map((expense) => expense.amount);
+      const expenseLabels = variableExpensesList.map((expense) => expense.name);
+
+      if (window.variableExpensesChart) {
+        window.variableExpensesChart.data.datasets[0].data = expenseData;
+        window.variableExpensesChart.data.labels = expenseLabels;
+        window.variableExpensesChart.update();
+      } else {
+        window.variableExpensesChart = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: expenseLabels,
+            datasets: [
+              {
+                data: expenseData,
+                backgroundColor: [
+                  "#36A2EB",
+                  "#FF6384",
+                  "#FFCE56",
+                  "#4BC0C0",
+                  "#9966FF",
+                  "#FF9F40",
+                  "#9E9E9E",
+                  "#4CAF50",
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: "Variable Expenses Breakdown",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return `$${formatMoney(tooltipItem.raw)}`;
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+    }
+
+
+
+ // Function to display fixed expenses in a list with a remove button
+function displayExpenseList() {
+  const listContainer = document.getElementById("fixed-expenses-list");
+  listContainer.innerHTML = "";
+
+  fixedExpensesList.forEach((expense, index) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${expense.name}: $${formatMoney(expense.amount)}`;
+
+    // Create remove button
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "X";
+    removeButton.addEventListener("click", function () {
+      removeExpense(index, 'fixed');
+    });
+
+    listItem.appendChild(removeButton);
+    listContainer.appendChild(listItem);
+  });
+}
+
+// Function to display variable expenses in a list with a remove button
+function displayVariableExpenseList() {
+  const listContainer = document.getElementById("variable-expenses-list");
+  listContainer.innerHTML = "";
+
+  variableExpensesList.forEach((expense, index) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${expense.name}: $${formatMoney(expense.amount)}`;
+
+    // Create remove button
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "X";
+    removeButton.addEventListener("click", function () {
+      removeExpense(index, 'variable');
+    });
+
+    listItem.appendChild(removeButton);
+    listContainer.appendChild(listItem);
+  });
+}
+
+// Function to remove expense from the list and update localStorage
+function removeExpense(index, type) {
+  if (type === 'fixed') {
+    fixedExpensesList.splice(index, 1); // Remove from fixed expenses list
+    localStorage.setItem("fixedExpenses", JSON.stringify(fixedExpensesList)); // Update localStorage
+    totalFixedExpenses = fixedExpensesList.reduce((total, expense) => total + expense.amount, 0);
+    localStorage.setItem("fixedMonthlyExpenses", totalFixedExpenses.toFixed(2)); // Update total in localStorage
+    updateChart(); // Update chart
+    displayExpenseList(); // Update list view
+  } else if (type === 'variable') {
+    variableExpensesList.splice(index, 1); // Remove from variable expenses list
+    localStorage.setItem("variableExpenses", JSON.stringify(variableExpensesList)); // Update localStorage
+    totalVariableExpenses = variableExpensesList.reduce((total, expense) => total + expense.amount, 0);
+    localStorage.setItem("variableMonthlyExpenses", totalVariableExpenses.toFixed(2)); // Update total in localStorage
+    updateVariableChart(); // Update chart
+    displayVariableExpenseList(); // Update list view
+  }
+}
+
+
+    // Initialize the page by loading expenses
+    loadExpenses();
+  </script>
+</body>
+
+</html>
